@@ -8,6 +8,3 @@ Use in commercial products is not yet advised. The Algorithms
 have not been thoroughly tested and have not been deployed
 in "real world" applications.
 
-
-
-
