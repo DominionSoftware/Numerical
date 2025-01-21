@@ -30,7 +30,6 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <numbers>
 #include <vector>
 #include <Eigen/Dense>
-#include "Constants.h"
 #include "Integral.h"
 #include "Roots.h"
 

@@ -33,7 +33,6 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <sciplot/Canvas.hpp>
 
 #include "AbscissaeFromData.h"
-#include "Constants.h"
 #include "GaussKronrodRules.h"
 #include "Integral.h"
 #include "linspace.h"
