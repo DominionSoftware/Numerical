@@ -93,7 +93,6 @@ namespace numerical
                 const T lambda2 = chebyshevNodes[5] * (differences[2] - differences[6] - differences[10]);
                 coefficients[3] = lambda1 + lambda2;
                 coefficients[9] = lambda1 - lambda2;
-                // ... (rest of the computation)
             };
             computeChebyshevCoefficients(chebyshevCoefficients12);
             computeChebyshevCoefficients(chebyshevCoefficients24);
