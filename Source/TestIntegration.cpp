@@ -377,20 +377,38 @@ TEST(NumericalTestSuite, TestGaussianLegendre)
 #endif
 TEST(NumericalTestSuite, TestClenshawCurtis)
 {
-    auto approximatelyEqual = [](double a, double b, double eps)
+
+
+    auto sinFunction = [](double x)->double
         {
-            return std::abs(a - b) < eps;
+            return std::sin(x);
         };
 
-    numerical::ClenshawCurtis::Function<double> f;
+    double expectedIntegral = 0.0;
+    double tolerance = 1e-12;
 
-    f.integrand = [](double x) { return x * x; };
+    numerical::ClenshawCurtis<double> clenshawCurtis(8);
+    double result = clenshawCurtis.Integrate(sinFunction, -1.0, 1.0);
 
-    numerical::ClenshawCurtis::IntegrationResult<double> result = numerical::ClenshawCurtis::Integrate<double>(f, 0.0, 1.0);
-
-    EXPECT_TRUE(approximatelyEqual(result.integral, 1.0 / 3.0,0.00001));
-    std::cout << "Result: " << result.integral << " Expected: " << 1.0 / 3.0 << std::endl;
-    EXPECT_EQ(result.errorCode, numerical::ClenshawCurtis::ErrorCode::NoError);
+    EXPECT_NEAR(result, expectedIntegral, tolerance);
+};
 
 
-}
+TEST(NumericalTestSuite, TestClenshawCurtis2)
+{
+
+
+    auto sinFunction = [](double x)->double
+        {
+            return  x * x * x + 2 * x * x + 3 * x + 4;
+        };
+
+    double expectedIntegral = 28.0 / 3.0;
+    double tolerance = 1e-12;
+
+    numerical::ClenshawCurtis<double> clenshawCurtis(20);
+    double result = clenshawCurtis.Integrate(sinFunction, -1.0, 1.0);
+
+    EXPECT_NEAR(result, expectedIntegral, tolerance);
+};
+

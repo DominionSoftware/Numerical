@@ -384,11 +384,6 @@ namespace numerical
 	}
 
 
-	inline std::tuple<numerical::ClenshawCurtis::ErrorCode, const char*, double>   IntegrateClenshawCurtis(numerical::ClenshawCurtis::Parameters<double>& parameters)
-	{
-		return std::make_tuple(numerical::ClenshawCurtis::ErrorCode::NoError, "NoError.", 0.0);
-
-	}
 
 
 }
