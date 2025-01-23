@@ -34,8 +34,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * @tparam T The type of values in the abscissae.
  */
-template<typename T>
-requires std::floating_point<T>
+template<std::floating_point T>
+ 
 class Abscissae
 {
 public:

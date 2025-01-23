@@ -32,8 +32,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <numeric>
 
 
-template<typename T>
-requires std::floating_point<T>
+template<std::floating_point T>
 bool isEqualFloat(T a, T b)
 {
 	return std::abs(b - a) < 0.001;

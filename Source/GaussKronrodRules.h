@@ -66,8 +66,7 @@ namespace numerical
 	 * order. This requires pre-allocating vectors in constructor.
 	 */
 
-	template<typename T>
-	requires std::floating_point<T>
+	template<std::floating_point T>
 	class GuassKronrodParameters
 	{
 	public:

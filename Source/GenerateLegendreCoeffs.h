@@ -36,8 +36,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 
-template<typename T = double>
-requires std::is_floating_point_v<T>
+template<std::floating_point T = double>
 std::vector<T> GenerateLegendreWeights(unsigned int n, const std::vector<T>& roots)
 {
 

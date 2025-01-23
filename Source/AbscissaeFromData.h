@@ -42,8 +42,7 @@ namespace numerical
 	 * @tparam T The type of values in the abscissae.
 	 */
 
-	template <typename T>
-	requires std::floating_point<T>
+	template <std::floating_point T>
 	class AbscissaeFromData : public Abscissae<T>
 	{
 	public:

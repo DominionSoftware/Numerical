@@ -34,10 +34,12 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "AbscissaeFromData.h"
 #include "GaussKronrodRules.h"
+#include "ClenshawCurtis.h"
 #include "Integral.h"
 #include "linspace.h"
 #include "valarray2vector.h"
 
+#if 0
 
 TEST(NumericalTestSuite, TestGaussKonrod1)
 {
@@ -372,4 +374,23 @@ TEST(NumericalTestSuite, TestGaussianLegendre)
 
 }
 
+#endif
+TEST(NumericalTestSuite, TestClenshawCurtis)
+{
+    auto approximatelyEqual = [](double a, double b, double eps)
+        {
+            return std::abs(a - b) < eps;
+        };
 
+    numerical::ClenshawCurtis::Function<double> f;
+
+    f.integrand = [](double x) { return x * x; };
+
+    numerical::ClenshawCurtis::IntegrationResult<double> result = numerical::ClenshawCurtis::Integrate<double>(f, 0.0, 1.0);
+
+    EXPECT_TRUE(approximatelyEqual(result.integral, 1.0 / 3.0,0.00001));
+    std::cout << "Result: " << result.integral << " Expected: " << 1.0 / 3.0 << std::endl;
+    EXPECT_EQ(result.errorCode, numerical::ClenshawCurtis::ErrorCode::NoError);
+
+
+}

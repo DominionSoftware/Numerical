@@ -57,20 +57,19 @@ namespace numerical
 	 * The trapezoidal rule works by approximating the region under the graph of the function as a trapezoid and calculating its area.
 	 */
 
-	template<typename T, typename R>
-	requires std::floating_point<T>
+	template<std::floating_point T, std::floating_point R>
 
 	T IntegrateTrapezoid(Abscissae<T>* abscissae, std::function<R(T)> f)
 	{
 		auto lower = abscissae->at(0);
 		auto upper = abscissae->at(abscissae->size() - 1);
 
-		double step = (upper - lower) / static_cast<T>(abscissae->size() - 1);
+		T step = (upper - lower) / static_cast<T>(abscissae->size() - 1);
 
 		auto sum = 0.5 * (f(upper) - f(lower));
 		for (size_t i = 1; i < abscissae->size(); ++i)
 		{
-			double x = abscissae->at(i);
+			T x = abscissae->at(i);
 			sum += f(x);
 		}
 
@@ -150,8 +149,7 @@ namespace numerical
 	 * @note The accuracy of the approximation increases with the number of subintervals (count).
 	 */
 
-	template<typename T, typename R>
-	requires std::floating_point<T> || std::floating_point<R>
+	template<std::floating_point T, std::floating_point R>
 	T IntegrateSimpsons(T lower, T upper, size_t count, std::function<R(T)> f)
 	{
 		static_assert(std::is_floating_point_v<T>, "Type must be real value");
@@ -163,10 +161,10 @@ namespace numerical
 			throw std::runtime_error("abscissae must have even count and more than 3 points");
 		}
 
-		const double sum = f(lower) + f(upper);
-		double odd{ 0 };
-		double even{ 0 };
-		double h = (upper - lower) / (count - 1);
+		const T sum = f(lower) + f(upper);
+		T odd{ 0 };
+		T even{ 0 };
+		T h = (upper - lower) / (count - 1);
 
 		for (size_t i = 1; i < count - 1; ++i)
 		{
@@ -191,8 +189,7 @@ namespace numerical
 	// Utilities for Legendre Polynomials.
 
 	// Function to calculate the derivative for Gauss-Legendre quadrature
-	template<typename T>
-	requires std::floating_point<T>
+	template<std::floating_point T>
 	T legendrePolynomialDerivative(unsigned int n, T x)
 	{
 		return n * (x * std::legendre(n, x) - std::legendre(n - 1, x)) / (x * x - 1.0);
@@ -200,8 +197,7 @@ namespace numerical
 
 
 	// Function to calculate the weights for Gauss-Legendre quadrature
-	template<typename T = double>
-	requires std::floating_point<T>
+	template<std::floating_point T = double>
 	std::vector<T> calculateWeights(unsigned int n, const std::vector<T>& roots)
 	{
 		std::vector<T> weights(n);
@@ -294,18 +290,18 @@ namespace numerical
 		size_t iteration = 1;
 		do
 		{
-			double aCurrent = 0;
-			double bCurrent = 0;
-			double resultCurrent = 0;
-			double errorCurrent = 0;
-			double area1 = 0;
-			double area2 = 0;
-			double error1 = 0;
-			double error2 = 0;
-			double resasc1 = 0;
-			double resasc2 = 0;
-			double resabs1 = 0;
-			double resabs2 = 0;
+			double aCurrent{};
+			double bCurrent{};
+			double resultCurrent{};
+			double errorCurrent{};
+			double area1{};
+			double area2{};
+			double error1{};
+			double error2{};
+			double resasc1{};
+			double resasc2{};
+			double resabs1{};
+			double resabs2{};
 
 			parameters.getValuesAtMaxError(aCurrent, bCurrent, resultCurrent, errorCurrent);
 

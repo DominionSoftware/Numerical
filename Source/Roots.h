@@ -39,8 +39,7 @@ namespace numerical
 
 
 	// initial guess, e.g.,  cos(std::numbers::pi * (i + 0.75) / (n + 0.5));
-	template<typename T = double>
-		requires std::floating_point<T>
+	template<std::floating_point T = double>
 	std::vector<T> NewtonRhapson(unsigned int n, std::function<T(unsigned int, unsigned int)> initialGuess, std::function<T(const unsigned int, const T)> f, std::function<T(const unsigned int, const T)> fPrime, double tol = 1e-10)
 	{
 		std::vector<double> roots;
@@ -65,8 +64,7 @@ namespace numerical
 
 	}
 
-	template<typename T = double>
-		requires std::floating_point<T>
+	template<std::floating_point T = double>
 	T NewtonRhapson(unsigned int n,T initialGuess, std::function<T(const T)> f, std::function<T( const T)> fPrime, double tol = 1e-10)
 	{
 

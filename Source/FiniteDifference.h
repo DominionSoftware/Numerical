@@ -46,8 +46,7 @@ namespace numerical
 	 *
 	 * @tparam T The type of values for the function and abscissae.
 	 */
-	template<typename T, typename D>
-	requires std::floating_point<T> &&  std::floating_point<D>
+	template<std::floating_point T, std::floating_point D>
 	class FiniteDifference
 	{
 	public:
