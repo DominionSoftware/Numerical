@@ -5,6 +5,9 @@ project(cuda_finite_difference CUDA)
 add_library(${PROJECT_NAME}
     FiniteDifference2D.cu
     FiniteDifference2D.cuh
+    DeviceMemory.cuh 
+    MemoryManagerFiniteDifference2D.cu
+    MemoryManagerFiniteDifference2D.cuh 
 )
 
 # Set include directories

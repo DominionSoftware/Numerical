@@ -24,3 +24,55 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
+#include "cuda_runtime.h"
+#include "cuda.h"
+
+__device__ const float hDiff[3][3] =
+{
+    {1, 0, -1},
+    {1, 0, -1},
+    {1, 0, -1}
+};
+
+__device__ float getDataSafe(
+    const float* data,
+    int x,
+    int y,
+    int width,
+    int height)
+{
+    // Clamp coordinates to boundaries
+    x = max(0, min(x, width - 1));
+    y = max(0, min(y, height - 1));
+
+    // Return  value at clamped coordinates
+    return data[y * width + x];
+}
+
+__global__ void finiteDiffKernel(
+    const float* input,
+    float* output,
+    int width,
+    int height)
+{
+   
+
+
+    int x = blockIdx.x * blockDim.x + threadIdx.x;
+    int y = blockIdx.y * blockDim.y + threadIdx.y;
+
+    if (x >= width || y >= height)
+    {
+        return;
+    }
+    float d{ };
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            float v = getDataSafe(input, x + j, y + i, width, height);
+            d += v * hDiff[i + 2][j + 2];
+        }
+    }
+
+    output[y * width + x] = d;
+
+}
