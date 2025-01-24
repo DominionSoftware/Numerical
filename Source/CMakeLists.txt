@@ -23,19 +23,27 @@ else()
 endif()
 
 # Add sciplot dependency
-set(SCIPLOT_DIR "D:/Projects/sciplot.ins/share/sciplot")
+if(WIN32)
+    set(SCIPLOT_DIR "D:/Projects/sciplot.ins/share/sciplot")
+endif(WIN32)
+
 find_package(SCIPLOT REQUIRED)
 set(SCIPLOT_SOURCE "${SCIPLOT_DIR}/../../include")
 
 # Add Eigen dependency
-set(Eigen3_DIR "D:/Projects/eigen.ins/share/eigen3/cmake")
+if(WIN32)
+    set(Eigen3_DIR "D:/Projects/eigen.ins/share/eigen3/cmake")
+endif(WIN32)
 find_package(Eigen3 REQUIRED NO_MODULE)
 
 # Add Google Test as a subdirectory
-set(CMAKE_PREFIX_PATH "D:Projects/googletest.ins" ${CMAKE_PREFIX_PATH})
+if(WIN32)
+    set(CMAKE_PREFIX_PATH "D:Projects/googletest.ins" ${CMAKE_PREFIX_PATH})
+endif(WIN32)
 find_package(GTest REQUIRED)
-set(GTEST_INCLUDES "D:/Projects/googletest.ins/include")
-
+if(WIN32)
+    set(GTEST_INCLUDES "D:/Projects/googletest.ins/include")
+endif(WIN32)
 # Source files
 set(SOURCE
     main.cpp
