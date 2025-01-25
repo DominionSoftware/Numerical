@@ -38,7 +38,7 @@ find_package(Eigen3 REQUIRED NO_MODULE)
 
 # Add Google Test as a subdirectory
 if(WIN32)
-    set(CMAKE_PREFIX_PATH "D:Projects/googletest.ins" ${CMAKE_PREFIX_PATH})
+    set(CMAKE_PREFIX_PATH "D:/Projects/googletest.ins" ${CMAKE_PREFIX_PATH})
 endif(WIN32)
 find_package(GTest REQUIRED)
 if(WIN32)
