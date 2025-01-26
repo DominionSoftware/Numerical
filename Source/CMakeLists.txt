@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 set(PROJECT_NAME Numerical)
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(${PROJECT_NAME} LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 20)
 
 # Look for CUDA 12.6
@@ -65,6 +65,11 @@ set(SOURCE
 add_executable(${PROJECT_NAME} ${SOURCE})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SCIPLOT_SOURCE} ${EIGEN3_INCLUDE_DIRS})
 
+if(MSVC)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:LIBCMT")
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
+endif()
+
 if(CUDA_FOUND)
     # Link CUDA components if available
     target_link_libraries(${PROJECT_NAME} PRIVATE cuda_finite_difference)
@@ -76,6 +81,7 @@ add_executable(${PROJECT_NAME}_tests
     TestFiniteDifference.cpp
     TestIntegration.cpp
     TestRootFinding.cpp
+    TestFiniteDifference2D.cpp
 )
 
 # Link the test executable to Google Test and other libraries

@@ -24,6 +24,41 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
-#include "cuda_runtime.h"
+ 
 
-__global__ void finiteDiffKernel(const float* input,float* output,int width,int height);
+ 
+#include "RunFiniteDifference2D.h"
+#include "linspace.h"
+ 
+#include "WriteVector.h"
+#include "gtest/gtest.h"
+#include <numbers>
+
+using namespace numerical;
+
+
+
+
+TEST(NumericalTestSuite, TestFiniteDifference2D1)
+{
+    // Function to test
+    std::function<double(double)> func = [](double x)
+        {
+            return std::cos(x);
+        };
+
+
+    std::vector<double> xData = numerical::Linspace<double>(-std::numbers::pi, 2 * std::numbers::pi, 256);
+
+
+    float* inputData = new float[256 * 256];
+
+    float* outputData = new float[256 * 256];
+
+ 
+    numerical::RunFiniteDifference2D(inputData, 256,256, outputData);
+
+
+
+}
+

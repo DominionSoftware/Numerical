@@ -12,7 +12,7 @@ namespace numerical
 
 		explicit MemoryManagerFiniteDifference2D(size_t sz);
 
-		void copyHostInputDataToDevice(float* data, size_t sz);
+		void copyHostInputDataToDevice(const float* data, size_t sz);
 		void copyDeviceOutputDataToHost(float* data, size_t sz);
 
 		float* getInputData()
