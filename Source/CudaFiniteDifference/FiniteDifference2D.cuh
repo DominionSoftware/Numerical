@@ -24,3 +24,6 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
+#include "cuda_runtime.h"
+
+__global__ void finiteDiffKernel(const float* input,float* output,int width,int height);

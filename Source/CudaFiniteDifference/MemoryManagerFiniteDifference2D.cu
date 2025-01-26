@@ -3,31 +3,34 @@
 #include <stdexcept>
 
 
-using namespace numerical;
-
-MemoryManagerFiniteDifference2D::MemoryManagerFiniteDifference2D(size_t sz)
+namespace numerical
 {
-	inputData_.allocate(sz);
-	outputData_.allocate(sz);
 
-}
 
-void MemoryManagerFiniteDifference2D::copyHostInputDataToDevice(float* data, size_t sz)
-{
-	cudaError_t error = cudaMemcpy(getInputData(), data, sz, cudaMemcpyHostToDevice);
-
-	if (error != cudaSuccess)
+	MemoryManagerFiniteDifference2D::MemoryManagerFiniteDifference2D(size_t sz)
 	{
-		throw std::runtime_error(cudaGetErrorString(error));
+		inputData_.allocate(sz);
+		outputData_.allocate(sz);
+
 	}
-}
 
-void MemoryManagerFiniteDifference2D::copyDeviceOutputDataToHost(float* data, size_t sz)
-{
-	cudaError_t error = cudaMemcpy(data,getOutputData(), sz, cudaMemcpyDeviceToHost);
-
-	if (error != cudaSuccess)
+	void MemoryManagerFiniteDifference2D::copyHostInputDataToDevice(const float* data, size_t sz)
 	{
-		throw std::runtime_error(cudaGetErrorString(error));
+		cudaError_t error = cudaMemcpy(getInputData(), data, sz, cudaMemcpyHostToDevice);
+
+		if (error != cudaSuccess)
+		{
+			throw std::runtime_error(cudaGetErrorString(error));
+		}
+	}
+
+	void MemoryManagerFiniteDifference2D::copyDeviceOutputDataToHost(float* data, size_t sz)
+	{
+		cudaError_t error = cudaMemcpy(data, getOutputData(), sz, cudaMemcpyDeviceToHost);
+
+		if (error != cudaSuccess)
+		{
+			throw std::runtime_error(cudaGetErrorString(error));
+		}
 	}
 }

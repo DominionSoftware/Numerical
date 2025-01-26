@@ -24,57 +24,46 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
-#include "cuda_runtime.h"
-#include "cuda.h"
-#include "stdio.h"
+ 
+
+ 
+#include "RunFiniteDifference2D.h"
+#include "linspace.h"
+ 
+#include "WriteVector.h"
+#include "gtest/gtest.h"
+#include <numbers>
+
+using namespace numerical;
 
 
-__device__ const float hDiff[3][3] =
+
+
+TEST(NumericalTestSuite, TestFiniteDifference2D1)
 {
-    {1.f, 0.f, -1.f},
-    {1.f, 0.f, -1.f},
-    {1.f, 0.f, -1.f}
-};
+    // Function to test
+    auto func = [](float x)->float
+        {
+           return std::cos(x);
+        };
 
-__device__ float getDataSafe(
-    const float* data,
-    int x,
-    int y,
-    int width,
-    int height)
-{
-    // Clamp coordinates to boundaries
-    x = max(0, min(x, width - 1));
-    y = max(0, min(y, height - 1));
+    namespace ranges = std::ranges;
+    std::vector<float> xData = numerical::Linspace<float>(-std::numbers::pi, 2 * std::numbers::pi, 256);
+    std::vector<float> inputData;
+    std::vector<float> outputData;
+    inputData.resize(256 * 256);
+    outputData.resize(256 * 256);
+    auto iter = inputData.begin();
 
-    // Return  value at clamped coordinates
-    return data[y * width + x];
-}
-
-__global__ void finiteDiffKernel(
-    const float* input,
-    float* output,
-    int width,
-    int height)
-{
-   
-
-
-    int x = blockIdx.x * blockDim.x + threadIdx.x;
-    int y = blockIdx.y * blockDim.y + threadIdx.y;
-
-    if (x >= width || y >= height)
+    for (size_t i = 0; i < 256; i++)
     {
-        return;
-    }
-    float d{ };
-    for (int i = -1; i <= 1; i++) {
-        for (int j = -1; j <= 1; j++) {
-            float v = getDataSafe(input, x + j, y + i, width, height);
-            d += v * hDiff[i + 1][j + 1];
-        }
-    }
+        ranges::transform(xData.begin(), xData.end(), iter, func);
+        iter += 256;
 
-    output[y * width + x] = d;
+    };
+    numerical::RunFiniteDifference2D(&inputData[0], 256, 256, &outputData[0]);
+
+
 
 }
+
