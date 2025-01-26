@@ -24,7 +24,7 @@ namespace numerical
 			dim3 gridDim((width + blockDim.x - 1) / blockDim.x,
 
 				(height + blockDim.y - 1) / blockDim.y);
-			finiteDiffKernel <<<gridDim, blockDim >>> (memory.getInputData(), memory.getInputData(), width, height);
+			finiteDiffKernel <<<gridDim, blockDim >>> (memory.getInputData(), memory.getOutputData(), width, height);
 
 			memory.copyDeviceOutputDataToHost(outputData, sz);
 

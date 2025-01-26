@@ -42,21 +42,26 @@ using namespace numerical;
 TEST(NumericalTestSuite, TestFiniteDifference2D1)
 {
     // Function to test
-    std::function<double(double)> func = [](double x)
+    auto func = [](float x)->float
         {
-            return std::cos(x);
+           return std::cos(x);
         };
 
+    namespace ranges = std::ranges;
+    std::vector<float> xData = numerical::Linspace<float>(-std::numbers::pi, 2 * std::numbers::pi, 256);
+    std::vector<float> inputData;
+    std::vector<float> outputData;
+    inputData.resize(256 * 256);
+    outputData.resize(256 * 256);
+    auto iter = inputData.begin();
 
-    std::vector<double> xData = numerical::Linspace<double>(-std::numbers::pi, 2 * std::numbers::pi, 256);
+    for (size_t i = 0; i < 256; i++)
+    {
+        ranges::transform(xData.begin(), xData.end(), iter, func);
+        iter += 256;
 
-
-    float* inputData = new float[256 * 256];
-
-    float* outputData = new float[256 * 256];
-
- 
-    numerical::RunFiniteDifference2D(inputData, 256,256, outputData);
+    };
+    numerical::RunFiniteDifference2D(&inputData[0], 256, 256, &outputData[0]);
 
 
 

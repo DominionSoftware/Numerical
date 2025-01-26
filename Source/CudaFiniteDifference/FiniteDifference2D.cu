@@ -26,12 +26,14 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "cuda_runtime.h"
 #include "cuda.h"
+#include "stdio.h"
+
 
 __device__ const float hDiff[3][3] =
 {
-    {1, 0, -1},
-    {1, 0, -1},
-    {1, 0, -1}
+    {1.f, 0.f, -1.f},
+    {1.f, 0.f, -1.f},
+    {1.f, 0.f, -1.f}
 };
 
 __device__ float getDataSafe(
@@ -69,7 +71,7 @@ __global__ void finiteDiffKernel(
     for (int i = -1; i <= 1; i++) {
         for (int j = -1; j <= 1; j++) {
             float v = getDataSafe(input, x + j, y + i, width, height);
-            d += v * hDiff[i + 2][j + 2];
+            d += v * hDiff[i + 1][j + 1];
         }
     }
 
