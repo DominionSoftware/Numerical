@@ -19,11 +19,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_L
     message(FATAL_ERROR "GCC version must be at least 11 for C++20 support")
 endif()
 
-
-
-option(USE_SCIPLOT "Enable SciPlot integration" OFF)
- 
-
+if(WIN32)
+    option(USE_SCIPLOT "Enable SciPlot integration" ON)
+endif(WIN32)
 
 
 
@@ -46,10 +44,6 @@ else()
 endif()
 
 # Add sciplot dependency
-if(WIN32)
-    set(SCIPLOT_DIR "D:/Projects/sciplot.ins/share/sciplot")
-endif(WIN32)
-
 if(USE_SCIPLOT)
     if(WIN32)
         set(SCIPLOT_DIR "D:/Projects/sciplot.ins/share/sciplot")
@@ -98,9 +92,7 @@ set(SOURCE
 # Add the main executable
 add_executable(${PROJECT_NAME} ${SOURCE})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SCIPLOT_SOURCE} ${EIGEN3_INCLUDE_DIRS})
-if(USE_SCIPLOT)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SCIPLOT)
-endif()
+
 
 if(MSVC)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:LIBCMT")
@@ -120,7 +112,9 @@ add_executable(${PROJECT_NAME}_tests
     TestRootFinding.cpp
     TestFiniteDifference2D.cpp
 )
-
+if(USE_SCIPLOT)
+    target_compile_definitions(${PROJECT_NAME}_tests PRIVATE USE_SCIPLOT)
+endif()
 # Link the test executable to Google Test and other libraries
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE GTest::GTest GTest::Main ${EIGEN3_LIBRARIES})
 
