@@ -1,0 +1,9 @@
+{
+    "cmake.sourceDirectory": "/home/rickfrank/Documents/Numerical/Source",
+    "files.associations": {
+        "concepts": "cpp",
+        "cmath": "cpp",
+        "tuple": "cpp",
+        "numbers": "cpp"
+    }
+}

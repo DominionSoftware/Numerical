@@ -1,11 +1,34 @@
 cmake_minimum_required(VERSION 3.12)
 
+set(CMAKE_CUDA_ARCHITECTURES 70;75;86)
+set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
+if(UNIX AND NOT APPLE)
+    set(CMAKE_C_COMPILER /usr/bin/gcc-11)
+    set(CMAKE_CXX_COMPILER /usr/bin/g++-11)
+endif()
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(-fconcepts-ts)
+endif()
+
 set(PROJECT_NAME Numerical)
 project(${PROJECT_NAME} LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 20)
 
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10)
+    message(FATAL_ERROR "GCC version must be at least 11 for C++20 support")
+endif()
+
+
+
+option(USE_SCIPLOT "Enable SciPlot integration" OFF)
+ 
+
+
+
+
 # Look for CUDA 12.6
-find_package(CUDA 12.6)
+find_package(CUDA 12.6...12.8)
 
 if(CUDA_FOUND)
     # Enable CUDA support for the project
@@ -15,9 +38,9 @@ if(CUDA_FOUND)
     # Set CUDA specific flags
     set(CMAKE_CUDA_STANDARD 17)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-    set(CMAKE_CUDA_ARCHITECTURES "70;75;86")
+ 
     # Add the CUDA subproject
-    add_subdirectory(CUDAFiniteDifference)
+    add_subdirectory(CudaFiniteDifference)
 else()
     message(STATUS "CUDA 12.6 not found. Skipping CUDA components.")
 endif()
@@ -27,9 +50,20 @@ if(WIN32)
     set(SCIPLOT_DIR "D:/Projects/sciplot.ins/share/sciplot")
 endif(WIN32)
 
-find_package(SCIPLOT REQUIRED)
-set(SCIPLOT_SOURCE "${SCIPLOT_DIR}/../../include")
-
+if(USE_SCIPLOT)
+    if(WIN32)
+        set(SCIPLOT_DIR "D:/Projects/sciplot.ins/share/sciplot")
+    endif(WIN32)
+    
+    find_package(SCIPLOT)
+    if(SCIPLOT_FOUND)
+        set(SCIPLOT_SOURCE "${SCIPLOT_DIR}/../../include")
+        message(STATUS "SciPlot found and enabled")
+    else()
+        message(WARNING "SciPlot not found. Disabling SciPlot integration.")
+        set(USE_SCIPLOT OFF)
+    endif()
+endif()
 # Add Eigen dependency
 if(WIN32)
     set(Eigen3_DIR "D:/Projects/eigen.ins/share/eigen3/cmake")
@@ -64,6 +98,9 @@ set(SOURCE
 # Add the main executable
 add_executable(${PROJECT_NAME} ${SOURCE})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SCIPLOT_SOURCE} ${EIGEN3_INCLUDE_DIRS})
+if(USE_SCIPLOT)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SCIPLOT)
+endif()
 
 if(MSVC)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:LIBCMT")

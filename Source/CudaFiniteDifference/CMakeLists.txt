@@ -37,8 +37,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
     POSITION_INDEPENDENT_CODE ON
 )
-
+if(WIN32)
 # Export the target
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CUDA_ARCHITECTURES native
 )
+endif(WIN32)

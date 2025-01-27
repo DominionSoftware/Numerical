@@ -30,13 +30,14 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <numbers>
 #include <ostream>
 #include <gtest/gtest.h>
+#ifdef USE_SCIPLOT
 #include <sciplot/Canvas.hpp>
-
+#endif
 #include "AbscissaeFromData.h"
 #include "GaussKronrodRules.h"
 #include "ClenshawCurtis.h"
 #include "Integral.h"
-#include "linspace.h"
+#include "Linspace.h"
 #include "valarray2vector.h"
 
 #if 0

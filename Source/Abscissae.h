@@ -34,6 +34,10 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * @tparam T The type of values in the abscissae.
  */
+#include <cstdlib>
+#include <concepts>
+
+
 template<std::floating_point T>
  
 class Abscissae

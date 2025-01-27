@@ -23,18 +23,18 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                        
 
 */
-
+#ifdef USE_SCIPLOT
 #include <sciplot/Canvas.hpp>
 #include <sciplot/Constants.hpp>
 #include <sciplot/Plot2D.hpp>
-
+#endif
 #include "AbscissaeFromData.h"
 #include "FiniteDifference.h"
-#include "linspace.h"
+#include "Linspace.h"
 #include "valarray2vector.h"
 #include "WriteVector.h"
 #include "gtest/gtest.h"
-
+#include <numbers>
 using namespace numerical;
 
 #define VISUAL_TEST
@@ -48,7 +48,7 @@ TEST(NumericalTestSuite, TestFiniteDifference1)
             return std::cos(x);
         };
 
-    auto x = numerical::Linspace<double>(-sciplot::PI, sciplot::PI, 100);
+    auto x = numerical::Linspace<double>(-std::numbers::pi, std::numbers::pi, 100);
     std::vector<double> csx(x.size());
     std::transform(std::begin(x), std::end(x), std::begin(csx), func);
 
@@ -66,7 +66,7 @@ TEST(NumericalTestSuite, TestFiniteDifference1)
     EXPECT_NEAR(fPrime[0], -std::sin(x[0]), 1e-4);
     EXPECT_NEAR(fPrime[x.size() / 2], -std::sin(x[x.size() / 2]), 1e-4);
 
-#ifdef VISUAL_TEST
+#ifdef USE_SCIPLOT
     sciplot::Plot2D plot;
     plot.xlabel("x");
     plot.ylabel("y");
@@ -119,7 +119,7 @@ TEST(NumericalTestSuite, TestFiniteDifference2)
     auto fPrime = fd.gradient(func, &abscissaeFromData);
 
 
-#ifdef VISUAL_TEST
+#ifdef USE_SCIPLOT
 
     sciplot::Plot2D plot;
     plot.xlabel("x");
@@ -183,7 +183,7 @@ TEST(NumericalTestSuite, TestFiniteDifference3)
     auto g = fd.gradient(func, &fromData);
     ASSERT_EQ(curve.size(), x.size());
     ASSERT_EQ(g.size(), x.size());
-
+#ifdef USE_SCIPLOT
     sciplot::Plot2D plot;
     plot.xlabel("x");
     plot.ylabel("y");
@@ -211,6 +211,6 @@ TEST(NumericalTestSuite, TestFiniteDifference3)
     // Show the plot in a pop-up window
     canvas.show();
 
-
+    #endif
 }
 

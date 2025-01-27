@@ -34,6 +34,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <span>
 #include <numeric>
+#include <cmath>
 #include "GaussKronrodConstants.h"
 
 namespace numerical

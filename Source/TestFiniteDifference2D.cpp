@@ -28,11 +28,13 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
  
 #include "RunFiniteDifference2D.h"
-#include "linspace.h"
+#include "Linspace.h"
  
 #include "WriteVector.h"
 #include "gtest/gtest.h"
 #include <numbers>
+#include <cmath>
+
 
 using namespace numerical;
 

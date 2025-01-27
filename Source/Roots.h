@@ -31,7 +31,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <concepts>
 #include <fstream>
 #include <optional>
-
+#include <cmath>
 
 namespace numerical
 {
@@ -55,7 +55,7 @@ namespace numerical
 			do {
 				x1 = x;
 				x = x1 - f(n, x1) / fPrime(n, x1);
-			} while (fabs(x - x1) > tol);
+			} while (std::fabs(x - x1) > tol);
 
 			roots.push_back(x);
 		}
@@ -114,7 +114,7 @@ namespace numerical
 		T Yb = f(b);
 		T Yc = Ya;
 
-		if (signbit(Ya) == signbit(Yb))
+		if (std::signbit(Ya) == std::signbit(Yb))
 		{
 			return std::make_tuple(FZeroErrors::NotBracketed, std::nanf("NaN"));
 		}
@@ -127,7 +127,7 @@ namespace numerical
 		{
 			bool aEQc{ false };
 
-			if (signbit(Ya) == signbit(Yb))
+			if (std::signbit(Ya) == std::signbit(Yb))
 			{
 				a = c;
 				Ya = Yc;
@@ -219,7 +219,7 @@ namespace numerical
 			}
 			else
 			{
-				T sg = signbit(b - a) ? static_cast<T>(1.0) : static_cast<T>(-1.0);
+				T sg = std::signbit(b - a) ? static_cast<T>(1.0) : static_cast<T>(-1.0);
 				b = b - sg * tol;
 			}
 			Yb = f(b);
