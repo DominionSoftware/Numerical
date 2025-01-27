@@ -29,41 +29,64 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <fstream>
 #include <string>
 
-template<typename T>
-class FileIO
+namespace numerical
 {
-public:
-	enum FileWriteResult
+
+	template<typename T>
+	class FileIO
 	{
-		FileWriteOK,
-		FileWriteErr
+	public:
+		enum FileWriteResult
+		{
+			FileWriteOK,
+			FileWriteErr
+		};
+
+
+		[[nodiscard]] static FileWriteResult WriteVector(std::vector<T>& v, const std::string& path)
+		{
+			std::ofstream output(path);
+
+
+
+
+			if (!output.is_open())
+			{
+				return FileWriteResult::FileWriteErr;
+			}
+
+			for (size_t i = 0; i < v.size() - 1; i++)
+			{
+				output << v[i] << ",";
+			}
+			output << v[v.size() - 1] << std::endl;
+
+			return FileWriteResult::FileWriteOK;
+
+		}
+
+
+		[[nodiscard]] static FileWriteResult WriteVector(std::ofstream& ofStream, std::vector<T>::const_iterator start, std::vector<T>::const_iterator end)
+		{
+
+			if (!ofStream.is_open())
+			{
+				return FileWriteResult::FileWriteErr;
+			}
+
+			for (auto iter = start; iter != end; iter++)
+			{
+				ofStream << *iter << ",";
+			}
+			ofStream << std::endl;
+
+			return FileWriteResult::FileWriteOK;
+
+		}
+
+
 	};
-
-
-[[nodiscard]] static FileWriteResult WriteVector(std::vector<T>& v, const std::string& path)
-{
-	std::ofstream output(path);
-
-
-
-
-	if (!output.is_open())
-	{
-		return FileWriteResult::FileWriteErr;
-	}
-
-	for (size_t i = 0; i < v.size() - 1; i++)
-	{
-		output << v[i] << ",";
-	}
-	output << v[v.size() - 1] << std::endl;
-
-	return FileWriteResult::FileWriteOK;
-
 }
-
-
-};
 
 
 #endif

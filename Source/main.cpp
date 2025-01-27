@@ -83,13 +83,13 @@ int main()
 		}
 		outputFile << "// weights for n = " << i << std::endl;
 	
-		for (auto& w : weights)
+		for (auto& www : weights)
 		{
 
 
-			if (w > 0)
+			if (www> 0)
 			{
-				outputFile << std::setw(2) << std::setprecision(25) << w << std::endl;
+				outputFile << std::setw(2) << std::setprecision(25) << www << std::endl;
 			}
 		}
 	}

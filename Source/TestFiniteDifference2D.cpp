@@ -34,7 +34,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "gtest/gtest.h"
 #include <numbers>
 #include <cmath>
-
+#include <filesystem>
 
 using namespace numerical;
 
@@ -49,8 +49,14 @@ TEST(NumericalTestSuite, TestFiniteDifference2D1)
            return std::cos(x);
         };
 
+    auto test_path = []() ->std::filesystem::path
+        {
+            return std::filesystem::current_path() / "finitedDifference2D_outout" / "";
+        };
+
+
     namespace ranges = std::ranges;
-    std::vector<float> xData = numerical::Linspace<float>(-std::numbers::pi, 2 * std::numbers::pi, 256);
+    std::vector<float> xData = numerical::Linspace<float>(-std::numbers::pi_v<float>, 2 * std::numbers::pi_v<float>, 256);
     std::vector<float> inputData;
     std::vector<float> outputData;
     inputData.resize(256 * 256);
@@ -66,6 +72,60 @@ TEST(NumericalTestSuite, TestFiniteDifference2D1)
     numerical::RunFiniteDifference2D(&inputData[0], 256, 256, &outputData[0]);
 
 
+    std::filesystem::create_directories(test_path());
+
+
+    auto saveInputFileName = test_path().replace_filename("inputData.csv");
+
+   
+    std::ofstream inputDataFile;
+
+    inputDataFile.open(saveInputFileName.string());
+
+    if (!inputDataFile.is_open())
+    {
+        throw std::runtime_error("Unable to open file.");
+    }
+
+    std::vector<float>::const_iterator inputIter = inputData.begin();
+    
+    for (size_t i = 0; i < 256; i++)
+
+    {
+        numerical::FileIO<float>::FileWriteResult result = numerical::FileIO<float>::WriteVector(inputDataFile, inputIter, inputIter + 256);
+        if (result == numerical::FileIO<float>::FileWriteResult::FileWriteErr)
+        {
+            throw std::runtime_error("Error Writing File.");
+        }
+        inputIter += 256;
+    }
+    inputDataFile.close();
+
+    auto saveOutputFileName = test_path().replace_filename("outputData.csv");
+
+    std::ofstream outputDataFile;
+
+    outputDataFile.open(saveOutputFileName.string());
+
+    if (!outputDataFile.is_open())
+    {
+        throw std::runtime_error("Unable to open file.");
+    }
+
+    std::vector<float>::const_iterator outputIter = outputData.begin();
+
+    for (size_t i = 0; i < 256; i++)
+
+    {
+        numerical::FileIO<float>::FileWriteResult result = numerical::FileIO<float>::WriteVector(outputDataFile, outputIter, outputIter + 256);
+        if (result == numerical::FileIO<float>::FileWriteResult::FileWriteErr)
+        {
+            throw std::runtime_error("Error Writing File.");
+        }
+        outputIter += 256;
+    }
+    outputDataFile.close();
+   
 
 }
 

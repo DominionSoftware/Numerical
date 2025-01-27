@@ -26,6 +26,24 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #ifndef GENERATE_LEGENDRE_COEFFS_
 #define GENERATE_LEGENDRE_COEFFS_
+
+
+// Warnings triggered by Eigen
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4127) 
+#pragma warning(disable: 5054) 
+#endif
+
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"  // MSVC 4127 (conditional expression is constant)
+#pragma GCC diagnostic ignored "-Wenum-compare" // MSVC 5054 (enum type comparison)
+#endif
+
+
+
+
 #include <algorithm>
 #include <numbers>
 #include <vector>
@@ -120,4 +138,15 @@ void ComputeAbscissasAndWeights(unsigned int n, Eigen::VectorXd& x, Eigen::Vecto
 		w(j) = 2 * (temp * temp);
 	}
 }
+
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
+
 #endif
